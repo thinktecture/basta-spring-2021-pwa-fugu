@@ -1,0 +1,14 @@
+<nav>
+  <button (click)="open()">Open</button>
+  <button (click)="save()">Save</button>
+  <button (click)="copy()" [disabled]="isClipboardDisabled">Copy</button>
+  <button (click)="paste()" [disabled]="isClipboardDisabled">Paste</button>
+  <button (click)="share()" [disabled]="isShareDisabled">Share</button>
+  <input type="color" (change)="colorChange($event)">
+</nav>
+
+<canvas #canvas width="600" height="480"
+        (pointerdown)="onPointerDown($event)"
+        (pointermove)="onPointerMove(canvas, $event)"
+        (pointerup)="onPointerUp()"
+></canvas>
