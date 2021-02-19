@@ -25,7 +25,6 @@ export class AppComponent implements AfterViewInit {
 
   // EX #17
   isOpenDisabled = !('showOpenFilePicker' in window);
-  isSaveDisabled = !('showSaveFilePicker' in window);
   isCopyDisabled = !('clipboard' in navigator && 'write' in navigator.clipboard);
   isPasteDisabled = !('clipboard' in navigator && 'read' in navigator.clipboard);
   isShareDisabled = !('canShare' in navigator);
@@ -94,11 +93,21 @@ export class AppComponent implements AfterViewInit {
   async save(): Promise<void> {
     // EX #11
     const blob = await this.paintService.toBlob(this.canvas.nativeElement);
-    const handle = await (window as any).showSaveFilePicker(this.fileOptions);
-    const writeable = await handle.createWritable();
-    await writeable.write(blob);
-    await writeable.close();
-    // EX #18
+
+    if ('showSaveFilePicker' in window) {
+      const handle = await (window as any).showSaveFilePicker(this.fileOptions);
+      const writeable = await handle.createWritable();
+      await writeable.write(blob);
+      await writeable.close();
+    } else {
+      // EX #18
+      const anchor = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      anchor.href = url;
+      anchor.download = 'image.png';
+      anchor.click();
+      URL.revokeObjectURL(url);
+    }
   }
 
   async copy(): Promise<void> {
