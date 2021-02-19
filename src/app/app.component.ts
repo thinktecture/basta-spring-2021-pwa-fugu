@@ -40,6 +40,16 @@ export class AppComponent implements AfterViewInit {
     ctx.fillStyle = 'black';
 
     // EX #16
+    if ('launchQueue' in window) {
+      (window as any).launchQueue.setConsumer(async params => {
+        const [handle] = params.file;
+        if (handle) {
+          const file = await handle.getFile();
+          const image = await this.paintService.getImage(file);
+          ctx.drawImage(image, 0, 0);
+        }
+      });
+    }
   }
 
   onPointerDown(event: PointerEvent): void {

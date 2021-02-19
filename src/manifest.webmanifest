@@ -62,5 +62,11 @@
     "description": "Show information about Paint",
     "url": "/index.html",
     "icons": [{ "src": "assets/icons/icon-128x128.png", "sizes": "128x128"}]
+  }],
+  "file_handlers": [{
+    "action": "/index.html",
+    "accept": {
+      "image/png": [".png"]
+    }
   }]
 }
