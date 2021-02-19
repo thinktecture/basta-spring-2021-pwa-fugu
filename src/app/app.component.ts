@@ -1,6 +1,6 @@
+import { DOCUMENT } from "@angular/common";
 import { AfterViewInit, Component, ElementRef, Inject, ViewChild } from '@angular/core';
-import {PaintService} from './paint.service';
-import {DOCUMENT} from "@angular/common";
+import { PaintService } from './paint.service';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +15,8 @@ export class AppComponent implements AfterViewInit {
   // EX #11
 
 
-  previousPoint: { x: number, y: number } | null = null;
+  previousPoint: {x: number, y: number} | null = null;
+
   // EX #17
 
   constructor(private paintService: PaintService, @Inject(DOCUMENT) private document: Document) {
@@ -41,7 +42,15 @@ export class AppComponent implements AfterViewInit {
 
   onPointerMove(canvas: HTMLCanvasElement, event: PointerEvent): void {
     // EX #4
-    this.context.fillRect(~~event.offsetX, ~~event.offsetY, 2, 2);
+    if (this.previousPoint) {
+      const currentPoint = {x: Math.floor(event.offsetX), y: Math.floor(event.offsetY)};
+      const points = this.paintService.bresenhamLine(this.previousPoint.x, this.previousPoint.y,
+        currentPoint.x, currentPoint.y);
+      for (const {x, y} of points) {
+        this.context.fillRect(x, y, 2, 2);
+      }
+      this.previousPoint = currentPoint;
+    }
   }
 
   onPointerUp(): void {
