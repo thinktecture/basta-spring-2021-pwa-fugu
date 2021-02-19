@@ -24,6 +24,11 @@ export class AppComponent implements AfterViewInit {
   previousPoint: { x: number, y: number } | null = null;
 
   // EX #17
+  isOpenDisabled = !('showOpenFilePicker' in window);
+  isSaveDisabled = !('showSaveFilePicker' in window);
+  isCopyDisabled = !('clipboard' in navigator && 'write' in navigator.clipboard);
+  isPasteDisabled = !('clipboard' in navigator && 'read' in navigator.clipboard);
+  isShareDisabled = !('canShare' in navigator);
 
   constructor(private paintService: PaintService, @Inject(DOCUMENT) private document: Document) {
   }
