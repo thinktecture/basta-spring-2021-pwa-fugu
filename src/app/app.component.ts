@@ -1,6 +1,6 @@
-import { DOCUMENT } from "@angular/common";
-import { AfterViewInit, Component, ElementRef, Inject, ViewChild } from '@angular/core';
-import { PaintService } from './paint.service';
+import {DOCUMENT} from "@angular/common";
+import {AfterViewInit, Component, ElementRef, Inject, ViewChild} from '@angular/core';
+import {PaintService} from './paint.service';
 
 @Component({
   selector: 'app-root',
@@ -13,9 +13,15 @@ export class AppComponent implements AfterViewInit {
   context: CanvasRenderingContext2D;
 
   // EX #11
+  private fileOptions = {
+    types: [{
+      description: 'PNG files',
+      accept: {'image/png': ['.png']}
+    }]
+  };
 
 
-  previousPoint: {x: number, y: number} | null = null;
+  previousPoint: { x: number, y: number } | null = null;
 
   // EX #17
 
@@ -68,6 +74,11 @@ export class AppComponent implements AfterViewInit {
 
   async save(): Promise<void> {
     // EX #11
+    const blob = await this.paintService.toBlob(this.canvas.nativeElement);
+    const handle = await (window as any).showSaveFilePicker(this.fileOptions);
+    const writeable = await handle.createWritable();
+    await writeable.write(blob);
+    await writeable.close();
     // EX #18
   }
 
