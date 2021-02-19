@@ -59,7 +59,7 @@ export class AppComponent implements AfterViewInit {
 
   colorChange($event) {
     // EX #6
-
+    this.context.fillStyle = $event.target.value;
   }
 
   async open(): Promise<void> {
